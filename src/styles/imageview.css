@@ -1,0 +1,10 @@
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;
+  margin: 0 20px;
+  padding: 15px 0px;
+  max-height: 60vh;
+  height: 80%;
+}
