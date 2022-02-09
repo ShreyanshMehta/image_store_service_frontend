@@ -3,22 +3,17 @@ import "../styles/common.css";
 import "../styles/collection.css";
 import Album from "./Album";
 import ImageCollection from "./ImageCollection";
-import {
-  BrowserRouter as Router,
-  Route,
-  useRouteMatch,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddAlbumDialog from "./AddAlbumDialog";
+import Home from "./Home";
 
 function Collection() {
   const [albums, setAlbums] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  let { path } = useRouteMatch();
 
   const handleClickOpen = () => {
     setDialogOpen(true);
@@ -70,7 +65,7 @@ function Collection() {
     <>
       <Router>
         <Switch>
-          <Route exact path={path}>
+          <Route exact path="/albums">
             <Layout>
               <div className="title">
                 <h1>Albums</h1>
@@ -106,6 +101,9 @@ function Collection() {
           </Route>
           <Route exact path="/albums/:albumId">
             <ImageCollection />
+          </Route>
+          <Route exact path="/">
+            <Home />
           </Route>
         </Switch>
       </Router>

@@ -28,7 +28,7 @@ const Album = ({
           <Button
             variant="contained"
             color="success"
-            onClick={() => history.replace("/albums/" + album_id)}
+            onClick={() => history.push("/albums/" + album_id)}
           >
             Open
           </Button>

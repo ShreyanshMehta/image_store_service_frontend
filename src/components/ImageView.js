@@ -6,6 +6,8 @@ import "../styles/common.css";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ImageCollection from "./ImageCollection";
 
 const ImageView = () => {
   let { albumId, imageId } = useParams();
@@ -24,21 +26,30 @@ const ImageView = () => {
   }, []);
 
   return (
-    <Layout>
-      <div className="title">
-        <h1>
-          {meta.album_name} / {meta.image_name}{" "}
-        </h1>
-      </div>
-      <div className="image-container">
-        <Image
-          id={meta.image_id}
-          image_name={meta.image_name}
-          created_at={meta.created_at}
-          isViewMode="true"
-        />
-      </div>
-    </Layout>
+    <Router>
+      <Switch>
+        <Route exact path="/albums/:albumId/:imageId">
+          <Layout>
+            <div className="title">
+              <h1>
+                {meta.album_name} / {meta.image_name}{" "}
+              </h1>
+            </div>
+            <div className="image-container">
+              <Image
+                id={meta.image_id}
+                image_name={meta.image_name}
+                created_at={meta.created_at}
+                isViewMode="true"
+              />
+            </div>
+          </Layout>
+        </Route>
+        <Route path="/albums/:albumId">
+          <ImageCollection />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

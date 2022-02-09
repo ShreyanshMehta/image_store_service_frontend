@@ -7,6 +7,9 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import AddImageDialog from "./AddImageDialog";
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Collection from "./AlbumCollection";
+import ImageView from "./ImageView";
 
 const ImageCollection = () => {
   let { albumId } = useParams();
@@ -69,35 +72,51 @@ const ImageCollection = () => {
   }, []);
 
   return (
-    <Layout>
-      <div className="title">
-        <h1>{albumName}</h1>
-      </div>
-      <div id="item-container">
-        {images.map((x) => {
-          return (
-            <Image
-              album_id={albumId}
-              key={x.image_id}
-              image_id={x.image_id}
-              image_name={x.image_name}
-              created_at={x.created_at}
-              deleteImage={deleteImage}
-            />
-          );
-        })}
-      </div>
-      <div className="add-btn">
-        <Fab color="secondary" onClick={handleClickOpen} caria-label="add">
-          <AddIcon />
-        </Fab>
-        <AddImageDialog
-          open={dialogOpen}
-          handleClose={handleClose}
-          addImage={addImage}
-        />
-      </div>
-    </Layout>
+    <Router>
+      <Switch>
+        <Route exact path="/albums/:albumId">
+          <Layout>
+            <div className="title">
+              <h1>{albumName}</h1>
+            </div>
+            <div id="item-container">
+              {images.map((x) => {
+                return (
+                  <Image
+                    album_id={albumId}
+                    key={x.image_id}
+                    image_id={x.image_id}
+                    image_name={x.image_name}
+                    created_at={x.created_at}
+                    deleteImage={deleteImage}
+                  />
+                );
+              })}
+            </div>
+            <div className="add-btn">
+              <Fab
+                color="secondary"
+                onClick={handleClickOpen}
+                caria-label="add"
+              >
+                <AddIcon />
+              </Fab>
+              <AddImageDialog
+                open={dialogOpen}
+                handleClose={handleClose}
+                addImage={addImage}
+              />
+            </div>
+          </Layout>
+        </Route>
+        <Route exact path="/albums">
+          <Collection />
+        </Route>
+        <Route exact path="/albums/:albumId/:imageId">
+          <ImageView />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 
