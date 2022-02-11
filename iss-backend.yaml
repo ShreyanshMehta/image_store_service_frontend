@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iss-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iss-backend
+  template:
+    metadata:
+      labels:
+        app: iss-backend
+    spec:
+      containers:
+        - image: mshreyansh1106/image-store-service-backend:v4
+          name: iss-backend
+          env:
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: mysql_db_url
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-configmap
+                  key: mysql_db_name
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: mysql_root_password
+          ports:
+            - containerPort: 4000
+              name: backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: iss-backend
+  type: LoadBalancer
+  ports:
+    - port: 4000
+      targetPort: 4000
+      nodePort: 30001
